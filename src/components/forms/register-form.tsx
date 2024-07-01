@@ -3,10 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { AlertCircle, Terminal } from "lucide-react";
 import { useState } from "react";
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,15 +19,9 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { register } from "@/actions/register";
+import { RegisterSchema } from "@/lib/form-schema";
 
-const formSchema = z.object({
-  email: z.string().email({ message: "Enter a valid email address" }),
-  password: z.string(),
-  firstname: z.string(),
-  lastname: z.string(),
-});
-
-type UserFormValue = z.infer<typeof formSchema>;
+type UserFormValue = z.infer<typeof RegisterSchema>;
 
 export function UserRegisterForm() {
   const searchParams = useSearchParams();
@@ -40,11 +32,11 @@ export function UserRegisterForm() {
     password: "",
   };
   const form = useForm<UserFormValue>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(RegisterSchema),
     defaultValues,
   });
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: z.infer<typeof RegisterSchema>) => {
     await register(data);
   };
 

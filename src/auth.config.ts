@@ -1,8 +1,6 @@
 import { NextAuthConfig } from "next-auth";
 import CredentialProvider from "next-auth/providers/credentials";
-import { getUserByEmail } from "./actions/login";
-import { db } from "./lib/db";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import { getUserByEmail } from "./actions/data";
 
 const authConfig = {
   providers: [

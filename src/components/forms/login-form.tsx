@@ -11,42 +11,52 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import Link from "next/link";
+import { LoginSchema } from "@/lib/form-schema";
+import { login } from "@/actions/login";
+import { AlertCircle } from "lucide-react";
 
-const formSchema = z.object({
-  email: z.string().email({ message: "Enter a valid email address" }),
-  password: z.string(),
-});
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-type UserFormValue = z.infer<typeof formSchema>;
+type UserFormValue = z.infer<typeof LoginSchema>;
 
 export default function UserAuthForm() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const defaultValues = {
     email: "",
     password: "",
   };
+
   const form = useForm<UserFormValue>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(LoginSchema),
     defaultValues,
   });
 
   const onSubmit = async (data: UserFormValue) => {
-    signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      callbackUrl: callbackUrl ?? "/dashboard",
+    console.log(data);
+    login(callbackUrl!, data).then((response) => {
+      response.success && router.push("/dashboard");
+      response.error && setError(response.error);
     });
   };
 
   return (
     <>
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="grid gap-4">
