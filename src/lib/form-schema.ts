@@ -19,18 +19,29 @@ export const RegisterSchema = z.object({
 });
 
 export const profileSchema = z.object({
-  firstname: z
+  treatmentplan: z
     .string()
-    .min(3, { message: "Product Name must be at least 3 characters" }),
-  lastname: z
+    .min(1, { message: "Treatment Plan is Required?" }),
+  chronicDiseaseStage: z
     .string()
-    .min(3, { message: "Product Name must be at least 3 characters" }),
+    .min(1, { message: "Chronic Disease Stage is Required" }),
+  maintenanceHemodialysisPerWeek: z
+    .string()
+    .min(1, { message: "Patient Name must be at least 3 characters" }),
+  suffixname: z
+    .string()
+    .min(3, { message: "Pantient Name must be at least 3 characters" }),
+  age: z.coerce.number(),
+  gender: z.string().min(1, { message: "Please select a category" }),
   email: z
     .string()
     .email({ message: "Product Name must be at least 3 characters" }),
   contactno: z.coerce.number(),
   country: z.string().min(1, { message: "Please select a category" }),
   city: z.string().min(1, { message: "Please select a category" }),
+  
+  
+  
   // jobs array is for the dynamic fields
   jobs: z.array(
     z.object({

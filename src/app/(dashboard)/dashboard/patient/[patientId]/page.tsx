@@ -10,12 +10,21 @@ export default function Page() {
         <BreadCrumb />
         <PatientForm
           categories={[
-            { _id: "shirts", name: "shirts" },
-            { _id: "pants", name: "pants" },
+            { _id: "A+", name: "A+" },
+            { _id: "AB+", name: "AB+" },
+            { _id: "B+", name: "B+" },
+            { _id: "O+", name: "O+" },
+          ]}
+          suffixcategories={[
+            { _id: "jr", name: "JR" },
+            { _id: "sr", name: "SR" },
+            { _id: "ii", name: "II" },
+            { _id: "iii", name: "III" },
           ]}
           initialData={null}
           key={null}
         />
+
       </div>
     </ScrollArea>
   );

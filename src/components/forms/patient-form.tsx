@@ -39,14 +39,19 @@ const ImgSchema = z.object({
 });
 
 const formSchema = z.object({
-  name: z
+  firstname: z
     .string()
     .min(3, { message: "patient Name must be at least 3 characters" }),
-  description: z
+  middlename: z
     .string()
     .min(3, { message: "patient description must be at least 3 characters" }),
-  price: z.coerce.number(),
-  category: z.string().min(1, { message: "Please select a category" }),
+  lastname: z
+    .string()
+    .min(3, { message: "patient description must be at least 3 characters" }),
+  suffixname: z.string().min(1, { message: "Please select a category" }),
+  age: z.coerce.number(),
+  birthday: z.string().min(1, {message: "Enter birthday bitch"}),
+  bloodtype: z.string().min(1, { message: "Please select a category" }),
 });
 
 type PatientFormValues = z.infer<typeof formSchema>;
@@ -54,11 +59,13 @@ type PatientFormValues = z.infer<typeof formSchema>;
 interface PatientFormProps {
   initialData: any | null;
   categories: any;
+  suffixcategories:any;
 }
 
 export const PatientForm: React.FC<PatientFormProps> = ({
   initialData,
   categories,
+  suffixcategories,
 }) => {
   const params = useParams();
   const router = useRouter();
@@ -73,11 +80,12 @@ export const PatientForm: React.FC<PatientFormProps> = ({
   const defaultValues = initialData
     ? initialData
     : {
-        name: "",
-        description: "",
-        price: 0,
+        firstname: "",
+        middlename: "",
+        lastname: "",
+        suffixname:"",
         imgUrl: [],
-        category: "",
+        bloodtype: "",
       };
 
   const form = useForm<PatientFormValues>({
@@ -149,14 +157,14 @@ export const PatientForm: React.FC<PatientFormProps> = ({
           <div className="gap-8 md:grid md:grid-cols-3">
             <FormField
               control={form.control}
-              name="name"
+              name="firstname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>First Name</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="patient name"
+                      placeholder="Your First name"
                       {...field}
                     />
                   </FormControl>
@@ -166,14 +174,14 @@ export const PatientForm: React.FC<PatientFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="description"
+              name="middlename"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Middle Name</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="patient description"
+                      placeholder="Your Middle Name"
                       {...field}
                     />
                   </FormControl>
@@ -183,12 +191,16 @@ export const PatientForm: React.FC<PatientFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="price"
+              name="lastname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Price</FormLabel>
+                  <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <Input type="number" disabled={loading} {...field} />
+                    <Input
+                      disabled={loading}
+                      placeholder="Your Last Name"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -196,10 +208,75 @@ export const PatientForm: React.FC<PatientFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="category"
+              name="suffixname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category</FormLabel>
+                  <FormLabel>Suffix Name</FormLabel>
+                  <Select
+                    disabled={loading}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder="Select a category"
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {/* @ts-ignore  */}
+                      {suffixcategories.map((suffixcategory) => (
+                        <SelectItem key={suffixcategory._id} value={suffixcategory._id}>
+                          {suffixcategory.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="age"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Age</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      disabled={loading}
+                      {...field}
+                      placeholder="Your Age"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="birthday"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Birth Date</FormLabel>
+                  <FormControl>
+                    <Input type="date" disabled={loading} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="bloodtype"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Blood Type</FormLabel>
                   <Select
                     disabled={loading}
                     onValueChange={field.onChange}
