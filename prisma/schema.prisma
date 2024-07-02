@@ -1,6 +1,6 @@
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.sqlite"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -60,4 +60,262 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Patient {
+  id Int @id @default(autoincrement())
+
+  bloodTypeId     Int
+  lastName        String
+  firstName       String
+  extensionNameId Int?
+  middleName      String
+  patientAge      Int
+  gender          String
+  birthdate       String
+
+  bloodType      BloodType        @relation(fields: [bloodTypeId], references: [id])
+  extensionName  ExtensionName?   @relation(fields: [extensionNameId], references: [id])
+  PatientSession PatientSession[]
+}
+
+model BloodType {
+  id        Int       @id @default(autoincrement())
+  bloodType String
+  Patient   Patient[]
+}
+
+model ExtensionName {
+  id            Int       @id @default(autoincrement())
+  extensionName String
+  Patient       Patient[]
+}
+
+model PatientSession {
+  id                         Int    @id @default(autoincrement())
+  patientId                  Int
+  sessionDate                String
+  patientDiagnosisId         Int
+  safetyCheckId              Int
+  anticoagulationId          Int
+  prescriptionVerificationId Int
+  ultraFiltrationId          Int
+  hemodialysisAccessId       Int
+  conditionOfAccessId        Int
+  prePostHemoWtVitalId       Int
+  medicationAdministrationId Int
+  additionalInfoId           Int
+
+  patient                  Patient                  @relation(fields: [patientId], references: [id])
+  PatientDiagnosis         PatientDiagnosis         @relation(fields: [patientDiagnosisId], references: [id])
+  SafetyCheck              SafetyCheck              @relation(fields: [safetyCheckId], references: [id])
+  Anticoagulation          Anticoagulation          @relation(fields: [anticoagulationId], references: [id])
+  PrescriptionVerification PrescriptionVerification @relation(fields: [prescriptionVerificationId], references: [id])
+  UltraFiltration          UltraFiltration          @relation(fields: [ultraFiltrationId], references: [id])
+  HemodialysisAccess       HemodialysisAccess       @relation(fields: [hemodialysisAccessId], references: [id])
+  ConditionOfAccess        ConditionOfAccess        @relation(fields: [conditionOfAccessId], references: [id])
+  PrePostHemoWtVital       PrePostHemoWtVital       @relation(fields: [prePostHemoWtVitalId], references: [id])
+  MedicationAdministration MedicationAdministration @relation(fields: [medicationAdministrationId], references: [id])
+  AdditionalInfo           AdditionalInfo           @relation(fields: [additionalInfoId], references: [id])
+}
+
+model PatientDiagnosis {
+  id                             Int    @id @default(autoincrement())
+  treatmentPlan                  String
+  chronicDiseaseStage            String
+  maintenanceHemodialysisPerWeek String
+  patientSessionId               Int
+
+  PatientSession PatientSession[]
+}
+
+model SafetyCheck {
+  id           Int    @id @default(autoincrement())
+  patientId    Int
+  conductivity String
+  selfTest     String
+  airDetector  String
+  bloodLeak    String
+
+  PatientSession PatientSession[]
+}
+
+model Anticoagulation {
+  id        Int    @id @default(autoincrement())
+  patientId Int
+  heparin   String
+  lmwh      String
+  nss       String
+
+  PatientSession PatientSession[]
+}
+
+model PrescriptionVerification {
+  id               Int    @id @default(autoincrement())
+  patientId        Int
+  dialyzerSize     String
+  noOfUse          Int
+  machineNo        String
+  residualTestDone String
+  hdTimeStart      String
+  hdTimeEnd        String
+  dhDuration       String
+  hdModality       String
+  dialysateFlow    String
+  hco3MlMin        Int
+  kplusBathMeqs    String
+
+  PatientSession PatientSession[]
+}
+
+model UltraFiltration {
+  id            Int @id @default(autoincrement())
+  patientId     Int
+  preHdWtKg     Int
+  dryWtKg       Int
+  wtGainKg      Int
+  reinfusionMl  Int
+  othersMl      Int
+  totalUfGoalMl Int
+
+  PatientSession PatientSession[]
+}
+
+model HemodialysisAccess {
+  id        Int @id @default(autoincrement())
+  patientId Int
+
+  TemporaryCatheter     TemporaryCatheter[]
+  PermanentArteriovenus PermanentArteriovenus[]
+  PatientSession        PatientSession[]
+}
+
+model PermanentArteriovenus {
+  id                   Int    @id @default(autoincrement())
+  patientId            Int
+  hemodialysisAccessId Int
+  fistula              String
+  graft                String
+  position             String
+  cannulatonAttemptAB  String
+
+  hemodialysisAccess HemodialysisAccess @relation(fields: [hemodialysisAccessId], references: [id])
+}
+
+model TemporaryCatheter {
+  id                   Int    @id @default(autoincrement())
+  patientId            Int
+  hemodialysisAccessId Int
+  ij                   String
+  subclavian           String
+  femoral              String
+  permcath             String
+  position             String
+
+  hemodialysisAccess HemodialysisAccess @relation(fields: [hemodialysisAccessId], references: [id])
+}
+
+model ConditionOfAccess {
+  id               Int @id @default(autoincrement())
+  patientSessionId Int
+  postHemoId       Int
+  insertionSiteId  Int
+  catheterPortId   Int
+  preHemoId        Int
+
+  preHemo        PreHemo          @relation(fields: [preHemoId], references: [id])
+  postHemo       PostHemo         @relation(fields: [postHemoId], references: [id])
+  insertionSite  InsertionSite    @relation(fields: [insertionSiteId], references: [id])
+  catheterPort   CatheterPort     @relation(fields: [catheterPortId], references: [id])
+  PatientSession PatientSession[]
+}
+
+model PreHemo {
+  id     Int    @id @default(autoincrement())
+  bruit  String
+  thrill String
+  bruise String
+
+  ConditionOfAccess ConditionOfAccess[]
+}
+
+model PostHemo {
+  id     Int    @id @default(autoincrement())
+  bruit  String
+  thrill String
+  bruise String
+
+  ConditionOfAccess ConditionOfAccess[]
+}
+
+model InsertionSite {
+  id         Int    @id @default(autoincrement())
+  normal     String
+  tender     String
+  discharges String
+  redness    String
+
+  ConditionOfAccess ConditionOfAccess[]
+}
+
+model CatheterPort {
+  id                Int                 @id @default(autoincrement())
+  good_flow         String
+  clotted           String
+  resistance        String
+  no_output         String
+  ConditionOfAccess ConditionOfAccess[]
+}
+
+model PrePostHemoWtVital {
+  id       Int @id @default(autoincrement())
+  preHdId  Int
+  postHdId Int
+
+  preHd          PreHd            @relation(fields: [preHdId], references: [id])
+  postHd         PostHd           @relation(fields: [postHdId], references: [id])
+  PatientSession PatientSession[]
+}
+
+model PreHd {
+  id    Int @id @default(autoincrement())
+  rrBpm Int
+  hrBpm Int
+  t_c   Int
+
+  PrePostHemoWtVital PrePostHemoWtVital[]
+}
+
+model PostHd {
+  id                 Int                  @id @default(autoincrement())
+  wtKg               Int
+  bpMmhg             Int
+  rrBpm              Int
+  hrBpm              Int
+  t_c                Int
+  PrePostHemoWtVital PrePostHemoWtVital[]
+}
+
+model MedicationAdministration {
+  id                  Int              @id @default(autoincrement())
+  medication          String
+  dosage              String
+  medicationRoute     String
+  medicationTime      String
+  medicationSignature String
+  PatientSession      PatientSession[]
+}
+
+model AdditionalInfo {
+  id                 Int              @id @default(autoincrement())
+  progressNote       String
+  doctorsOrder       String
+  attendingPhysician String
+  primed             String
+  safetyChecked      String
+  initiated          String
+  monitored          String
+  terminated         String
+  nurseOnDuty        String
+  PatientSession     PatientSession[]
 }
