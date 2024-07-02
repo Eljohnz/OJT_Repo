@@ -1,10 +1,10 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import { User } from "@/constants/data";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Patient } from "@prisma/client";
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<Patient>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -25,20 +25,40 @@ export const columns: ColumnDef<User>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: "NAME",
+    accessorKey: "id",
+    header: "ID",
   },
   {
-    accessorKey: "company",
-    header: "COMPANY",
+    accessorKey: "lastName",
+    header: "LAST NAME",
   },
   {
-    accessorKey: "role",
-    header: "ROLE",
+    accessorKey: "firstName",
+    header: "FIRST NAME",
   },
   {
-    accessorKey: "status",
-    header: "STATUS",
+    accessorKey: "middleName",
+    header: "MIDDLE NAME",
+  },
+  {
+    accessorKey: "extensionName.extensionName",
+    header: "SUFFIX",
+  },
+  {
+    accessorKey: "bloodType.bloodType",
+    header: "BLOOD TYPE",
+  },
+  {
+    accessorKey: "patientAge",
+    header: "AGE",
+  },
+  {
+    accessorKey: "gender",
+    header: "GENDER",
+  },
+  {
+    accessorKey: "birthdate",
+    header: "BIRTHDATE",
   },
   {
     id: "actions",
