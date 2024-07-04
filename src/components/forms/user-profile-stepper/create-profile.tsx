@@ -136,6 +136,11 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
         "residualTestDone",
         "hemoStart",
         "hemoEnd",
+        "dhduration",
+        "hdmodality",
+        "dialysateflow",
+        "hco3",
+        "bathmeqs",
       ],
     },
     {
@@ -144,6 +149,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
       fields: [
         "prehd",
         "dryweight",
+        "weightgain",
         "gainkg",
         "reinfusionml",
         "othersml",
@@ -168,23 +174,28 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
     {
       id: "Step 7",
       name: "CONDITION OF ACCESS",
-      fields: ["bruit",
-      "thrill",
-      "bruise",
-      "normal",
-      "tender",
-      "discharges",
-      "redness",
-      "goodFlow",
-      "clotted",
-      "resistance",
-      "numberOfOutput"
-    ],
+      fields: [
+        "bruit",
+        "thrill",
+        "bruise",
+        "bruit1",
+        "thrill",
+        "bruise1",
+        "normal",
+        "tender",
+        "discharges",
+        "redness",
+        "goodFlow",
+        "clotted",
+        "resistance",
+        "numberOfOutput",
+      ],
     },
     {
       id: "Step 8",
       name: "PRE AND POST HEMODIALYSIS WEIGHT AND VITAL SIGNS",
-      fields: ["wt1",
+      fields: [
+        "wt1",
         "bpmmhg1",
         "rrbpm1",
         "hrbpm1",
@@ -193,32 +204,29 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
         "bpmmhg2",
         "rrbpm2",
         "hrbpm2",
-        "tc2"
+        "tc2",
       ],
     },
     {
       id: "Step 9",
       name: "Medication Administration",
-      fields: ["medication",
-        "dosage",
-        "route",
-        "time",
-        "signature"
+      fields: ["medication", "dosage", "route", "time", "signature"],
+    },
+    {
+      id: "Step 10",
+      name: "Additional Information",
+      fields: [
+        "progressnotes",
+        "doctorsorder",
+        "attendingphysician",
+        "primed",
+        "safetychecked",
+        "initiated",
+        "monitored",
+        "terminated",
+        "nursesupervisor",
       ],
     },
-    { id: "Step 10", 
-      name: "Additional Information",
-    fields: [
-      "progressnotes",
-      "doctorsorder",
-      "attendingphysician",
-      "primed",
-      "safetychecked",
-      "initiated",
-      "monitored",
-      "terminated",
-      "nursesupervisor"
-    ] },
   ];
 
   const next = async () => {
@@ -249,12 +257,44 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
   };
 
   const safetyChoices = [
-    { id: "wow", name: "Failed" },
-    { id: "wows", name: "Passed" },
+    { id: "choicePass", name: "Passed" },
+    { id: "choiceFail", name: "Failed" },
   ];
+
+  const nssChoices = [
+    { id: "nssMl", name: "ML" },
+    { id: "nssEvery", name: "Every" },
+  ];
+
+  const heparinChoices = [
+    { id: "heparinReg", name: "Regular" },
+    { id: "heparinHalf", name: "Half" },
+  ];
+
+  const hdModalityChoices = [
+    { id: "hdModalityConventional", name: "Conventional" },
+    { id: "hdModalitySequential", name: "Sequential" },
+    { id: "hdModalitySled", name: "Sled" },
+  ];
+
+  const dialysateChoices = [
+    { id: "dialysateHco3", name: "HCO3" },
+    { id: "dialysateKBath", name: "K+ Bath" },
+  ];
+
+  const preHdChoices = [
+    { id: "preHdPresent", name: "Present" },
+    { id: "preHdAbsent", name: "Absent" },
+  ];
+
+  const postHdChoices = [
+    { id: "postHdPresent", name: "Present" },
+    { id: "postdAbsent", name: "Absent" },
+  ];
+
   const genders = [
-    { id: "wower", name: "Male" },
-    { id: "wowes", name: "Female" },
+    { id: "genderMale", name: "Male" },
+    { id: "genderFemale", name: "Female" },
   ];
   const cities = [{ id: "2", name: "kerala" }];
 
@@ -283,24 +323,24 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                   <span className="text-sm font-medium text-green-600 transition-colors ">
                     {step.id}
                   </span>
-                  <span className="text-sm font-medium">{step.name}</span>
+                  <span className="text-sm font-bold">{step.name}</span>
                 </div>
               ) : currentStep === index ? (
                 <div
-                  className="flex w-full flex-col border-l-4 border-sky-600 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
+                  className="flex w-full flex-col border-l-4 border-gray-400 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
                   aria-current="step"
                 >
-                  <span className="text-sm font-medium text-sky-600">
+                  <span className="text-sm font-medium text-gray">
                     {step.id}
                   </span>
-                  <span className="text-sm font-medium">{step.name}</span>
+                  <span className="text-sm font-bold">{step.name}</span>
                 </div>
               ) : (
                 <div className="group flex h-full w-full flex-col border-l-4 border-gray-200 py-2 pl-4 transition-colors md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
                   <span className="text-sm font-medium text-gray-500 transition-colors">
                     {step.id}
                   </span>
-                  <span className="text-sm font-medium">{step.name}</span>
+                  <span className="text-sm font-bold">{step.name}</span>
                 </div>
               )}
             </li>
@@ -315,9 +355,9 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
         >
           <div
             className={cn(
-              currentStep > 0
+              currentStep !== 0
                 ? "w-full md:inline-block"
-                : "gap-8 md:grid md:grid-cols-3"
+                : "gap-8 md:grid md:grid-cols-3 h-80"
             )}
           >
             {/* step 1 */}
@@ -380,220 +420,223 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
             {/* step 2 */}
             {currentStep === 1 && (
               <>
-                <FormField
-                  control={form.control}
-                  name="conductivity"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>CONDUCTIVITY</FormLabel>
-                      <Select
-                        disabled={loading}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select one" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {/* @ts-ignore  */}
-                          {safetyChoices.map((choice) => (
-                            <SelectItem key={choice.id} value={choice.id}>
-                              {choice.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
+                <div
+                  className={cn(
+                    "relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-4 h-80"
                   )}
-                />
+                >
+                  <>
+                    <FormField
+                      control={form.control}
+                      name="conductivity"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>CONDUCTIVITY</FormLabel>
+                          <Select
+                            disabled={loading}
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select one" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {/* @ts-ignore  */}
+                              {safetyChoices.map((choice) => (
+                                <SelectItem key={choice.id} value={choice.id}>
+                                  {choice.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="selfTest"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>SELF TEST</FormLabel>
-                      <Select
-                        disabled={loading}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select one" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {/* @ts-ignore  */}
-                          {safetyChoices.map((choice) => (
-                            <SelectItem key={choice.id} value={choice.id}>
-                              {choice.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormField
+                      control={form.control}
+                      name="selfTest"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>SELF TEST</FormLabel>
+                          <Select
+                            disabled={loading}
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select one" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {/* @ts-ignore  */}
+                              {safetyChoices.map((choice) => (
+                                <SelectItem key={choice.id} value={choice.id}>
+                                  {choice.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="airDetector"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>AIR DETECTOR</FormLabel>
-                      <Select
-                        disabled={loading}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select one" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {/* @ts-ignore  */}
-                          {safetyChoices.map((choice) => (
-                            <SelectItem key={choice.id} value={choice.id}>
-                              {choice.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="bloodLeak"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>BLOOD LEAK</FormLabel>
-                      <Select
-                        disabled={loading}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select one" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {/* @ts-ignore  */}
-                          {safetyChoices.map((choice) => (
-                            <SelectItem key={choice.id} value={choice.id}>
-                              {choice.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormField
+                      control={form.control}
+                      name="airDetector"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>AIR DETECTOR</FormLabel>
+                          <Select
+                            disabled={loading}
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select one" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {/* @ts-ignore  */}
+                              {safetyChoices.map((choice) => (
+                                <SelectItem key={choice.id} value={choice.id}>
+                                  {choice.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </>
+                  <FormField
+                    control={form.control}
+                    name="bloodLeak"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>BLOOD LEAK</FormLabel>
+                        <Select
+                          disabled={loading}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select one" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {/* @ts-ignore  */}
+                            {safetyChoices.map((choice) => (
+                              <SelectItem key={choice.id} value={choice.id}>
+                                {choice.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </>
             )}
 
             {/* step 3 */}
             {currentStep === 2 && (
               <>
-                <FormField
-                  control={form.control}
-                  name="heparin"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>ANTICOAGULATIONS</FormLabel>
-                      <Select
-                        disabled={loading}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select one" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {/* @ts-ignore  */}
-                          {safetyChoices.map((choice) => (
-                            <SelectItem key={choice.id} value={choice.id}>
-                              {choice.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
+                <div
+                  className={cn(
+                    "relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-3 h-80"
                   )}
-                />
+                >
+                  <>
+                    <FormField
+                      control={form.control}
+                      name="heparin"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>HEPARIN</FormLabel>
+                          <Select
+                            disabled={loading}
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select one" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {/* @ts-ignore  */}
+                              {heparinChoices.map((choice) => (
+                                <SelectItem key={choice.id} value={choice.id}>
+                                  {choice.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="lmwh"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>LMWH</FormLabel>
-                      <Select
-                        disabled={loading}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select one" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {/* @ts-ignore  */}
-                          {safetyChoices.map((choice) => (
-                            <SelectItem key={choice.id} value={choice.id}>
-                              {choice.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormField
+                      control={form.control}
+                      name="lmwh"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>LMWH</FormLabel>
+                          <FormControl>
+                            <Input
+                              disabled={loading}
+                              placeholder="Enter Chronic Disease Stage"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="nss"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>NSS</FormLabel>
-                      <Select
-                        disabled={loading}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select one" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {/* @ts-ignore  */}
-                          {safetyChoices.map((choice) => (
-                            <SelectItem key={choice.id} value={choice.id}>
-                              {choice.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormField
+                      control={form.control}
+                      name="nss"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>NSS</FormLabel>
+                          <Select
+                            disabled={loading}
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select one" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {/* @ts-ignore  */}
+                              {nssChoices.map((choice) => (
+                                <SelectItem key={choice.id} value={choice.id}>
+                                  {choice.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </>
+                </div>
               </>
             )}
 
@@ -602,7 +645,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
               <>
                 <div
                   className={cn(
-                    "relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-4"
+                    "relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-4 h-80"
                   )}
                 >
                   <>
@@ -633,6 +676,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                             <Input
                               disabled={loading}
                               placeholder="Enter Number"
+                              type="number"
                               {...field}
                             />
                           </FormControl>
@@ -651,6 +695,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                               disabled={loading}
                               placeholder="Enter Machine Number"
                               {...field}
+                              type="number"
                             />
                           </FormControl>
                           <FormMessage />
@@ -676,7 +721,8 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                               id="start-time"
                               min="09:00"
                               max="18:00"
-                              value="00:00"
+                              value={field.value}
+                              onChange={field.onChange}
                               required
                             />
                           </div>
@@ -703,7 +749,8 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                               id="start-time"
                               min="09:00"
                               max="18:00"
-                              value="00:00"
+                              value={field.value}
+                              onChange={field.onChange}
                               required
                             />
                           </div>
@@ -722,6 +769,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                           <Input
                             disabled={loading}
                             placeholder="Enter DH Duration"
+                            type="number"
                             {...field}
                           />
                         </FormControl>
@@ -735,13 +783,25 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>HD MODALITY</FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled={loading}
-                            placeholder="Enter HD Modality"
-                            {...field}
-                          />
-                        </FormControl>
+                        <Select
+                          disabled={loading}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select one" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {/* @ts-ignore  */}
+                            {hdModalityChoices.map((choice) => (
+                              <SelectItem key={choice.id} value={choice.id}>
+                                {choice.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -752,13 +812,25 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>DIALYSATE FLOW</FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled={loading}
-                            placeholder="Enter Dialysate flow"
-                            {...field}
-                          />
-                        </FormControl>
+                        <Select
+                          disabled={loading}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select one" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {/* @ts-ignore  */}
+                            {dialysateChoices.map((choice) => (
+                              <SelectItem key={choice.id} value={choice.id}>
+                                {choice.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -806,7 +878,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
               <>
                 <div
                   className={cn(
-                    "relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-3"
+                    "relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-3 h-80"
                   )}
                 >
                   <>
@@ -820,6 +892,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                             <Input
                               disabled={loading}
                               placeholder="Enter Pre-Hemodialysis Weight"
+                              type="number"
                               {...field}
                             />
                           </FormControl>
@@ -837,6 +910,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                             <Input
                               disabled={loading}
                               placeholder="Enter Weight"
+                              type="number"
                               {...field}
                             />
                           </FormControl>
@@ -854,6 +928,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                             <Input
                               disabled={loading}
                               placeholder="Enter Weight Gain"
+                              type="number"
                               {...field}
                             />
                           </FormControl>
@@ -922,22 +997,23 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
               <>
                 <div
                   className={cn(
-                    "relative mb-5 gap-8 rounded-md border p-4 md:grid md:grid-cols-2"
+                    "relative mb-5 gap-8 rounded-md border p-4 md:grid md:grid-cols-2 h-90"
                   )}
                 >
-                <div className="flex flex-col gap-y-10">
-                  <h1>Permanent Arteriovenus </h1>
-                    <FormField 
+                  <div className="flex flex-col gap-y-10">
+                    <h1>Permanent Arteriovenus </h1>
+                    <FormField
                       control={form.control}
                       name="fistula"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>PRE-HD WT KG</FormLabel> 
-                          <FormControl >
-                            <Input className="py-3"
+                          <FormLabel>PRE-HD WT KG</FormLabel>
+                          <FormControl>
+                            <Input
+                              className="py-3"
                               disabled={loading}
                               placeholder="Enter Pre-Hemodialysis Weight"
-                              {...field}  
+                              {...field}
                             />
                           </FormControl>
                           <FormMessage />
@@ -951,7 +1027,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                         <FormItem>
                           <FormLabel>DRY WT. KG</FormLabel>
                           <FormControl>
-                            <Input 
+                            <Input
                               disabled={loading}
                               placeholder="Enter Weight"
                               {...field}
@@ -968,7 +1044,7 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                         <FormItem>
                           <FormLabel>WT. GAIN KG</FormLabel>
                           <FormControl>
-                            <Input 
+                            <Input
                               disabled={loading}
                               placeholder="Enter Weight Gain"
                               {...field}
@@ -978,111 +1054,111 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                         </FormItem>
                       )}
                     />
-                  <FormField
-                    control={form.control}
-                    name="cannulationAttempt"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>REINFUSION ML</FormLabel>
-                        <FormControl>
-                          <Input 
-                            disabled={loading}
-                            placeholder="Enter Reinfusion"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    <FormField
+                      control={form.control}
+                      name="cannulationAttempt"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>REINFUSION ML</FormLabel>
+                          <FormControl>
+                            <Input
+                              disabled={loading}
+                              placeholder="Enter Reinfusion"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                  <div className="flex flex-col gap-y-10">   
-                  <h1>TEMPORARY (CATHETER)</h1>
-                  <FormField
-                    control={form.control}
-                    name="ij"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>OTHERS ML</FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled={loading}
-                            placeholder="Enter Other Info"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="subclavian"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>TOTAL UF GOAL ML</FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled={loading}
-                            placeholder="Enter Total UF Goal"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="femora"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>TOTAL UF GOAL ML</FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled={loading}
-                            placeholder="Enter Total UF Goal"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="permcath"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>TOTAL UF GOAL ML</FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled={loading}
-                            placeholder="Enter Total UF Goal"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="position2"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>TOTAL UF GOAL ML</FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled={loading}
-                            placeholder="Enter Total UF Goal"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="flex flex-col gap-y-10">
+                    <h1>TEMPORARY (CATHETER)</h1>
+                    <FormField
+                      control={form.control}
+                      name="ij"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>OTHERS ML</FormLabel>
+                          <FormControl>
+                            <Input
+                              disabled={loading}
+                              placeholder="Enter Other Info"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="subclavian"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>TOTAL UF GOAL ML</FormLabel>
+                          <FormControl>
+                            <Input
+                              disabled={loading}
+                              placeholder="Enter Total UF Goal"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="femora"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>TOTAL UF GOAL ML</FormLabel>
+                          <FormControl>
+                            <Input
+                              disabled={loading}
+                              placeholder="Enter Total UF Goal"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="permcath"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>TOTAL UF GOAL ML</FormLabel>
+                          <FormControl>
+                            <Input
+                              disabled={loading}
+                              placeholder="Enter Total UF Goal"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="position2"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>TOTAL UF GOAL ML</FormLabel>
+                          <FormControl>
+                            <Input
+                              disabled={loading}
+                              placeholder="Enter Total UF Goal"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 </div>
               </>
@@ -1091,80 +1167,119 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
             {/* step 7 */}
             {currentStep === 6 && (
               <div
-              className={cn(
-                "relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-2"
-              )}>
+                className={cn(
+                  "relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-2"
+                )}
+              >
+                {/* Pre HD */}
                 <div className="flex flex-col gap-y-6">
-                <h1>PRE HD</h1>
-                {/* <pre className="whitespace-pre-wrap">
+                  <h1>PRE HD</h1>
+                  {/* <pre className="whitespace-pre-wrap">
                   {JSON.stringify(data)}
                 </pre> */}
 
-                <FormField
-                      control={form.control}
-                      name="bruit"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Bruit</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Bruit"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                <FormField
-                      control={form.control}
-                      name="thrill"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Thrill</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Thrill"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
                   <FormField
-                      control={form.control}
-                      name="bruise"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Bruise</FormLabel>
+                    control={form.control}
+                    name="bruit"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Bruit</FormLabel>
+                        <Select
+                          disabled={loading}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
                           <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Bruise"
-                              {...field}
-                            />
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select one" />
+                            </SelectTrigger>
                           </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                          <SelectContent>
+                            {/* @ts-ignore  */}
+                            {preHdChoices.map((choice) => (
+                              <SelectItem key={choice.id} value={choice.id}>
+                                {choice.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="thrill"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Thrill</FormLabel>
+                        <Select
+                          disabled={loading}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select one" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {/* @ts-ignore  */}
+                            {preHdChoices.map((choice) => (
+                              <SelectItem key={choice.id} value={choice.id}>
+                                {choice.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="bruise"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Bruise</FormLabel>
+                        <Select
+                          disabled={loading}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select one" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {/* @ts-ignore  */}
+                            {preHdChoices.map((choice) => (
+                              <SelectItem key={choice.id} value={choice.id}>
+                                {choice.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
+                {/* Insertion Site */}
                 <div className="flex flex-col gap-y-6">
-                <h1>POST HD</h1>
-                
-                <FormField
+                    <h1>Insertion Site</h1>
+                    <FormField
                       control={form.control}
-                      name="bruit1"
+                      name="normal"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Bruit</FormLabel>
+                          <FormLabel>Normal</FormLabel>
                           <FormControl>
                             <Input
+                              className="py-3"
                               disabled={loading}
-                              placeholder="Enter Bruit"
+                              placeholder="Enter Pre-Hemodialysis Weight"
                               {...field}
                             />
                           </FormControl>
@@ -1172,16 +1287,17 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                         </FormItem>
                       )}
                     />
-                <FormField
+                    <FormField
                       control={form.control}
-                      name="thrill1"
+                      name="tender"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Thrill</FormLabel>
+                          <FormLabel>Tender</FormLabel>
                           <FormControl>
                             <Input
+                              className="py-3"
                               disabled={loading}
-                              placeholder="Enter Thrill"
+                              placeholder="Enter Pre-Hemodialysis Weight"
                               {...field}
                             />
                           </FormControl>
@@ -1189,16 +1305,149 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                         </FormItem>
                       )}
                     />
+                    <FormField
+                      control={form.control}
+                      name="discharges"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Discharges</FormLabel>
+                          <FormControl>
+                            <Input
+                              className="py-3"
+                              disabled={loading}
+                              placeholder="Enter Pre-Hemodialysis Weight"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="redness"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Redness</FormLabel>
+                          <FormControl>
+                            <Input
+                              className="py-3"
+                              disabled={loading}
+                              placeholder="Enter Pre-Hemodialysis Weight"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                {/* Post HD */}
+                <div className="flex flex-col gap-y-6">
+                  <h1>POST HD</h1>
+
                   <FormField
+                    control={form.control}
+                    name="bruit1"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Bruit</FormLabel>
+                        <Select
+                          disabled={loading}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select one" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {/* @ts-ignore  */}
+                            {postHdChoices.map((choice) => (
+                              <SelectItem key={choice.id} value={choice.id}>
+                                {choice.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="thrill1"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Thrill</FormLabel>
+                        <Select
+                          disabled={loading}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select one" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {/* @ts-ignore  */}
+                            {postHdChoices.map((choice) => (
+                              <SelectItem key={choice.id} value={choice.id}>
+                                {choice.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="bruise1"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Bruise</FormLabel>
+                        <Select
+                          disabled={loading}
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select one" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {/* @ts-ignore  */}
+                            {postHdChoices.map((choice) => (
+                              <SelectItem key={choice.id} value={choice.id}>
+                                {choice.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                {/* Catheter Port */}
+                <div className="flex flex-col gap-y-6">
+                    <h1>Catheter Port</h1>
+                    <FormField
                       control={form.control}
-                      name="bruise1"
+                      name="goodFlow"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Bruise</FormLabel>
+                          <FormLabel>Good Flow</FormLabel>
                           <FormControl>
                             <Input
+                              className="py-3"
                               disabled={loading}
-                              placeholder="Enter Bruise"
+                              placeholder="Enter Pre-Hemodialysis Weight"
                               {...field}
                             />
                           </FormControl>
@@ -1206,460 +1455,513 @@ export const CreateProfileOne: React.FC<ProfileFormType> = ({
                         </FormItem>
                       )}
                     />
-                </div>
+                    <FormField
+                      control={form.control}
+                      name="clotted"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Clotted</FormLabel>
+                          <FormControl>
+                            <Input
+                              className="py-3"
+                              disabled={loading}
+                              placeholder="Enter Pre-Hemodialysis Weight"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="resistance"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Resistance</FormLabel>
+                          <FormControl>
+                            <Input
+                              className="py-3"
+                              disabled={loading}
+                              placeholder="Enter Pre-Hemodialysis Weight"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="numberOfOutput"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Number of Output</FormLabel>
+                          <FormControl>
+                            <Input
+                              className="py-3"
+                              disabled={loading}
+                              placeholder="Enter Pre-Hemodialysis Weight"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
               </div>
             )}
-            
+
             {/* step 8 */}
             {currentStep === 7 && (
               <div
-              className={cn(
-                "relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-2"
-              )}>
+                className={cn(
+                  "relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-2"
+                )}
+              >
                 <div className="flex flex-col gap-y-6">
-                <h1>PRE HD</h1>
-                {/* <pre className="whitespace-pre-wrap">
+                  <h1>PRE HD</h1>
+                  {/* <pre className="whitespace-pre-wrap">
                   {JSON.stringify(data)}
                 </pre> */}
 
-                <FormField
-                      control={form.control}
-                      name="wt1"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>WEIGHT</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Weight"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                <FormField
-                      control={form.control}
-                      name="bpmmhg1"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>BP. mmHg</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Blood Pressure mmhg"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
                   <FormField
-                      control={form.control}
-                      name="rrbpm1"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>RR. bpm</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Respiratory bpm"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    control={form.control}
+                    name="wt1"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>WEIGHT</FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={loading}
+                            placeholder="Enter Weight"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   <FormField
-                      control={form.control}
-                      name="hrbpm1"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>HR. bpm</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Heart Rate bpm"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    control={form.control}
+                    name="bpmmhg1"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>BP. mmHg</FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={loading}
+                            placeholder="Enter Blood Pressure mmhg"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   <FormField
-                      control={form.control}
-                      name="tc1"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>T. C</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter temperature (Celsius)"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    control={form.control}
+                    name="rrbpm1"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>RR. bpm</FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={loading}
+                            placeholder="Enter Respiratory bpm"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="hrbpm1"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>HR. bpm</FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={loading}
+                            placeholder="Enter Heart Rate bpm"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="tc1"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>T. C</FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={loading}
+                            placeholder="Enter temperature (Celsius)"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
                 <div className="flex flex-col gap-y-6">
-                <h1>POST HD</h1>
-                
-                <FormField
-                      control={form.control}
-                      name="wt2"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>WEIGHT</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Weight"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                <FormField
-                      control={form.control}
-                      name="bpmmhg2"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>BP. mmHg</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Blood Pressure mmhg"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                  <h1>POST HD</h1>
+
                   <FormField
-                      control={form.control}
-                      name="rrbpm2"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>RR. bpm</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Respiratory bpm"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    control={form.control}
+                    name="wt2"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>WEIGHT</FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={loading}
+                            placeholder="Enter Weight"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   <FormField
-                      control={form.control}
-                      name="hrbpm2"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>HR. bpm</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Heart Rate bpm"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    control={form.control}
+                    name="bpmmhg2"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>BP. mmHg</FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={loading}
+                            placeholder="Enter Blood Pressure mmhg"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   <FormField
-                      control={form.control}
-                      name="tc2"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>T. C</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter temperature (Celsius)"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    control={form.control}
+                    name="rrbpm2"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>RR. bpm</FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={loading}
+                            placeholder="Enter Respiratory bpm"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="hrbpm2"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>HR. bpm</FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={loading}
+                            placeholder="Enter Heart Rate bpm"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="tc2"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>T. C</FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={loading}
+                            placeholder="Enter temperature (Celsius)"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
               </div>
             )}
 
-             {/* step 9 */}
-             {currentStep === 8 && (
+            {/* step 9 */}
+            {currentStep === 8 && (
               <div
-              className={cn(
-                "relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-2"
-              )}>
-
+                className={cn(
+                  "relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-2"
+                )}
+              >
                 <FormField
-                    control={form.control}
-                    name="medication"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>MEDICATION</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Medication"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  <FormField
-                      control={form.control}
-                      name="dosage"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Dosage</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Dosage"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  <FormField
-                      control={form.control}
-                      name="route"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>ROUTE</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Route"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  <FormField
-                      control={form.control}
-                      name="time"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>TIME</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Time"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="signature"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>SIGNATURE</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Signature"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                </div>
+                  control={form.control}
+                  name="medication"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>MEDICATION</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Medication"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="dosage"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Dosage</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Dosage"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="route"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>ROUTE</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Route"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="time"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>TIME</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Time"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="signature"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>SIGNATURE</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Signature"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             )}
 
-             {/* step 10 */}
-             {currentStep === 9 && (
+            {/* step 10 */}
+            {currentStep === 9 && (
               <div
-              className={cn(
-                "relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-2"
-              )}>
+                className={cn(
+                  "relative mb-4 gap-8 rounded-md border p-4 md:grid md:grid-cols-2"
+                )}
+              >
+                <FormField
+                  control={form.control}
+                  name="progressnotes"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>PROGRESS NOTES</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Progress Notes"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="doctorsorder"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>DOCTORS ORDER</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Doctors Order"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="attendingphysician"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>ATTENDING PHYSICIAN</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Attending Physician"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="primed"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>PRIMED</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Primed"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="safetychecked"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>SAFETY CHECKED</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Safety Checked"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <FormField
-                    control={form.control}
-                    name="progressnotes"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>PROGRESS NOTES</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Progress Notes"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  <FormField
-                      control={form.control}
-                      name="doctorsorder"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>DOCTORS ORDER</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Doctors Order"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  <FormField
-                      control={form.control}
-                      name="attendingphysician"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>ATTENDING PHYSICIAN</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Attending Physician"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  <FormField
-                      control={form.control}
-                      name="primed"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>PRIMED</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Primed"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="safetychecked"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>SAFETY CHECKED</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Safety Checked"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                  control={form.control}
+                  name="initiated"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>INITIATED</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Initiated"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                    <FormField
-                      control={form.control}
-                      name="initiated"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>INITIATED</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Initiated"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="monitored"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>MONITORED</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Monitored"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="terminated"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>TERMINATED</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Terminated"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="nursesupervisor"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>NURSE SUPERVISOR ON DUTY</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled={loading}
-                              placeholder="Enter Nurse Supervisor On Duty"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                </div>
-
-                
+                <FormField
+                  control={form.control}
+                  name="monitored"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>MONITORED</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Monitored"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="terminated"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>TERMINATED</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Terminated"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="nursesupervisor"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>NURSE SUPERVISOR ON DUTY</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder="Enter Nurse Supervisor On Duty"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             )}
           </div>
 

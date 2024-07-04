@@ -89,12 +89,6 @@ export default function UserAuthForm() {
                   <FormItem>
                     <div className="flex items-center">
                       <FormLabel>Password</FormLabel>
-                      <Link
-                        href="#"
-                        className="ml-auto inline-block text-sm underline"
-                      >
-                        Forgot your password?
-                      </Link>
                     </div>
                     <FormControl>
                       <Input
@@ -113,6 +107,9 @@ export default function UserAuthForm() {
             <Button type="submit" className="w-full">
               Sign in
             </Button>
+            <Link href="#" className="ml-auto inline-block text-sm underline">
+              Forgot your password?
+            </Link>
           </div>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
